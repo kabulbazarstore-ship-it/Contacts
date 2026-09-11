@@ -1,0 +1,21 @@
+{
+  "name": "مخاطبین",
+  "short_name": "مخاطبین",
+  "description": "دفترچه مخاطبین هوشمند شما",
+  "start_url": "index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#061713",
+  "theme_color": "#061713",
+  "lang": "fa",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

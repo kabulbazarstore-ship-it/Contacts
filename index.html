@@ -1,0 +1,2258 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="theme-color" content="#071c17">
+<meta name="description" content="مخاطبین - دفترچه مخاطبین هوشمند">
+<title>مخاطبین | Contacts</title>
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="مخاطبین">
+<link rel="apple-touch-icon" href="icon.svg">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;600;700&family=Vazirmatn:wght@300;400;500;600;700;800&display=swap');
+
+.social-link {
+    color: var(--gold);
+    text-decoration: none;
+    font-weight: 700;
+    transition: 0.2s;
+    border-bottom: 1px dashed rgba(197, 155, 85, 0.4);
+    padding-bottom: 2px;
+}
+.social-link:hover { color: var(--gold2); }
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+    --bg: #f7f4ed;
+    --card: #ffffff;
+    --card2: #f0ede5;
+    --text: #17211d;
+    --muted: #7a817d;
+    --gold: #c59b55;
+    --gold2: #dfbd7c;
+    --green: #08251e;
+    --green2: #103b30;
+    --border: #e5e0d5;
+    --danger: #b84a4a;
+    --shadow: 0 12px 35px rgba(19,30,25,.08);
+}
+
+body.dark {
+    --bg: #0b1110;
+    --card: #121b18;
+    --card2: #19231f;
+    --text: #f4f1e9;
+    --muted: #9da7a2;
+    --border: #26332e;
+    --shadow: 0 15px 40px rgba(0,0,0,.25);
+}
+
+html, body {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    font-family: 'Vazirmatn', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    transition: .25s;
+}
+
+button, input, textarea, select { font-family: inherit; }
+button { border: 0; cursor: pointer; }
+.hidden { display: none !important; }
+
+/* ===== SPLASH ===== */
+.splash {
+    min-height: 100vh;
+    min-height: 100dvh;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(197,155,85,.18), transparent 30%),
+        radial-gradient(circle at 85% 75%, rgba(25,90,70,.3), transparent 35%),
+        linear-gradient(145deg, #061713, #0c2b22 55%, #061713);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 30px 22px;
+}
+.splash:before, .splash:after {
+    content: "";
+    position: absolute;
+    border: 1px solid rgba(197,155,85,.15);
+    border-radius: 50%;
+}
+.splash:before { width: 420px; height: 420px; top: -190px; right: -160px; }
+.splash:after { width: 350px; height: 350px; bottom: -190px; left: -150px; }
+.splash-content {
+    width: 100%;
+    max-width: 430px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+.logo {
+    width: 112px;
+    height: 112px;
+    border: 1px solid rgba(223,189,124,.65);
+    border-radius: 34px;
+    margin: 0 auto 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,.045);
+    box-shadow: 0 20px 55px rgba(0,0,0,.25), inset 0 0 35px rgba(197,155,85,.07);
+}
+.logo-inner {
+    width: 82px;
+    height: 82px;
+    border-radius: 26px;
+    background: linear-gradient(145deg, #d9b56d, #a97d38);
+    color: #10221c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    box-shadow: 0 10px 25px rgba(0,0,0,.22);
+}
+.splash h1 { font-size: 42px; font-weight: 800; letter-spacing: -2px; }
+.english {
+    margin-top: 5px;
+    color: #d8c59e;
+    font-size: 11px;
+    letter-spacing: 7px;
+}
+.line {
+    width: 65px;
+    height: 2px;
+    background: var(--gold2);
+    margin: 22px auto;
+    border-radius: 10px;
+}
+.splash-desc {
+    color: rgba(255,255,255,.72);
+    line-height: 2;
+    font-size: 14px;
+}
+.enter {
+    width: 100%;
+    margin-top: 38px;
+    padding: 17px 22px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #d8b56f, #b88b47);
+    color: #10221b;
+    font-size: 15px;
+    font-weight: 800;
+    box-shadow: 0 15px 35px rgba(0,0,0,.25);
+    transition: .2s;
+}
+.enter:active { transform: scale(.97); }
+.creator {
+    position: absolute;
+    bottom: 24px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: 3;
+    color: rgba(255,255,255,.48);
+    font-size: 10px;
+}
+.creator strong {
+    display: block;
+    margin-top: 4px;
+    color: rgba(255,255,255,.78);
+    font-size: 11px;
+}
+
+/* ===== APP ===== */
+.app {
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding-bottom: 85px;
+}
+.header {
+    height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 18px;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+}
+.brand { display: flex; align-items: center; gap: 11px; }
+.mini-logo {
+    width: 43px;
+    height: 43px;
+    border-radius: 14px;
+    background: var(--green);
+    color: #d6b36d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+.brand-title { font-size: 18px; font-weight: 800; }
+.brand-sub { color: var(--muted); font-size: 9px; margin-top: 2px; }
+.icon-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    background: var(--card2);
+    color: var(--text);
+    font-size: 19px;
+}
+
+.page {
+    display: none;
+    padding: 20px 16px 30px;
+    max-width: 700px;
+    margin: auto;
+}
+.page.active { display: block; }
+
+/* HOME */
+.hero {
+    border-radius: 25px;
+    padding: 24px;
+    min-height: 165px;
+    background: radial-gradient(circle at 85% 20%, rgba(197,155,85,.18), transparent 30%),
+                linear-gradient(135deg, var(--green), #123e31);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    position: relative;
+}
+.hero:after {
+    content: "";
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 50%;
+    left: -90px;
+    bottom: -110px;
+}
+.hero small { color: #d9c18e; }
+.hero h2 { font-size: 22px; margin: 8px 0; }
+.hero p { font-size: 11px; color: rgba(255,255,255,.67); line-height: 1.9; }
+.hero-icon {
+    width: 68px;
+    height: 68px;
+    border: 1px solid rgba(218,181,108,.45);
+    border-radius: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    color: #dfbf7b;
+    background: rgba(255,255,255,.04);
+}
+
+.section-title { margin: 26px 2px 13px; }
+.section-title small { color: var(--gold); font-size: 10px; }
+.section-title h3 { margin-top: 4px; font-size: 17px; }
+
+.quick-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 11px;
+}
+.quick {
+    min-height: 88px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 19px;
+    padding: 14px;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    text-align: right;
+    color: var(--text);
+    box-shadow: var(--shadow);
+}
+.quick:active { transform: scale(.98); }
+.quick-icon {
+    width: 43px;
+    height: 43px;
+    flex: none;
+    border-radius: 14px;
+    background: var(--card2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+}
+.quick strong { display: block; font-size: 13px; }
+.quick span { display: block; color: var(--muted); font-size: 9px; margin-top: 4px; }
+.quick.add { background: var(--green); color: white; border-color: var(--green); }
+.quick.add .quick-icon { background: rgba(255,255,255,.09); color: #dcb976; }
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 9px;
+}
+.stat {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 17px;
+    padding: 15px 8px;
+    text-align: center;
+}
+.stat strong { display: block; font-size: 21px; color: var(--gold); }
+.stat span { display: block; font-size: 9px; color: var(--muted); margin-top: 4px; }
+
+.categories {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+.category {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 17px;
+    padding: 15px;
+    color: var(--text);
+    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.category-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    background: var(--card2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.category-name { font-size: 12px; font-weight: 700; }
+.category-count { font-size: 10px; color: var(--muted); }
+
+/* CONTACTS */
+.page-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 17px;
+}
+.page-head small { color: var(--gold); font-size: 10px; }
+.page-head h2 { font-size: 22px; margin-top: 4px; }
+.add-btn {
+    background: var(--green);
+    color: white;
+    padding: 11px 14px;
+    border-radius: 14px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.sync-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: 15px;
+    background: linear-gradient(135deg, #1e40af, #3b82f6);
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 8px 20px rgba(30,64,175,.35);
+    margin-bottom: 10px;
+    cursor: pointer;
+    border: none;
+}
+.sync-btn:active { transform: scale(.97); }
+
+.sync-info {
+    font-size: 9px;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 14px;
+    line-height: 1.8;
+}
+
+.search {
+    height: 53px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 17px;
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    gap: 8px;
+}
+.search-icon { color: var(--gold); font-size: 21px; }
+.search input {
+    flex: 1;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--text);
+    font-size: 12px;
+    min-width: 0;
+}
+.search button { background: transparent; color: var(--muted); font-size: 20px; }
+
+.filters {
+    display: flex;
+    gap: 7px;
+    overflow-x: auto;
+    padding: 12px 0;
+    scrollbar-width: none;
+}
+.filters::-webkit-scrollbar { display: none; }
+.filter {
+    white-space: nowrap;
+    padding: 8px 13px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--muted);
+    font-size: 10px;
+}
+.filter.active { background: var(--green); color: white; border-color: var(--green); }
+
+.contact-stats {
+    display: flex;
+    justify-content: space-between;
+    padding: 11px 14px;
+    margin-bottom: 12px;
+    background: var(--card2);
+    border-radius: 14px;
+}
+.contact-stats div { text-align: center; flex: 1; }
+.contact-stats span { display: block; color: var(--muted); font-size: 8px; }
+.contact-stats strong { display: block; font-size: 14px; margin-top: 3px; }
+
+.contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.contact-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 19px;
+    padding: 13px;
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    box-shadow: var(--shadow);
+}
+
+.avatar {
+    width: 53px;
+    height: 53px;
+    flex: none;
+    border-radius: 17px;
+    background: var(--card2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    color: var(--gold);
+    font-size: 20px;
+    font-weight: 700;
+}
+.avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+.contact-info { flex: 1; min-width: 0; }
+.contact-name {
+    font-size: 13px;
+    font-weight: 800;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.contact-phone {
+    color: var(--muted);
+    font-size: 10px;
+    direction: ltr;
+    text-align: right;
+    margin-top: 4px;
+}
+.contact-category {
+    display: inline-block;
+    color: var(--gold);
+    background: rgba(197,155,85,.1);
+    border-radius: 7px;
+    padding: 2px 6px;
+    font-size: 8px;
+    margin-top: 5px;
+}
+
+.contact-quick-actions {
+    display: flex;
+    gap: 5px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+.quick-act {
+    padding: 6px 10px;
+    border-radius: 9px;
+    font-size: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: 0.2s;
+}
+.quick-act:active { transform: scale(0.92); }
+.quick-act.wa { background: rgba(37,211,102,.15); color: #128c4b; }
+.quick-act.tg { background: rgba(41,161,218,.15); color: #1a7fa8; }
+.quick-act.sms { background: rgba(59,130,246,.15); color: #1e40af; }
+.quick-act.imo { background: rgba(255,165,0,.15); color: #cc8400; }
+
+.contact-actions {
+    display: flex;
+    gap: 5px;
+    flex-shrink: 0;
+    flex-direction: column;
+}
+.contact-actions button {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: var(--card2);
+    color: var(--text);
+    font-size: 14px;
+}
+.contact-actions .fav.active { color: #d09f42; }
+.contact-actions .call { background: var(--green); color: white; }
+
+.empty {
+    text-align: center;
+    padding: 55px 20px;
+}
+.empty-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 22px;
+    background: var(--card2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    font-size: 30px;
+}
+.empty h3 { margin-top: 15px; font-size: 16px; }
+.empty p { color: var(--muted); font-size: 11px; line-height: 1.9; margin: 7px 0 18px; }
+
+/* ABOUT */
+.about-card {
+    text-align: center;
+    background: linear-gradient(145deg, var(--green), #123c30);
+    color: white;
+    border-radius: 25px;
+    padding: 30px 22px;
+}
+.about-logo {
+    width: 75px;
+    height: 75px;
+    margin: auto;
+    border-radius: 23px;
+    background: linear-gradient(145deg, #d9b66e, #a97d3b);
+    color: #10221c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}
+.about-card h2 { margin-top: 16px; font-size: 24px; }
+.about-card .eng { color: #d9c28f; letter-spacing: 5px; font-size: 9px; margin-top: 3px; }
+.about-card p { margin-top: 16px; font-size: 11px; line-height: 2; color: rgba(255,255,255,.7); }
+
+.info {
+    margin-top: 12px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 19px;
+    padding: 18px;
+}
+.info-title { color: var(--gold); font-size: 9px; }
+.info h3 { font-size: 16px; margin: 5px 0; }
+.info p { color: var(--muted); font-size: 10px; line-height: 2; }
+
+.features { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.feature {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 13px;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+.feature-check {
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    background: rgba(197,155,85,.1);
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.feature strong { display: block; font-size: 11px; }
+.feature span { display: block; color: var(--muted); font-size: 9px; margin-top: 2px; }
+
+.details {
+    margin-top: 12px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 19px;
+    overflow: hidden;
+}
+.detail {
+    display: flex;
+    justify-content: space-between;
+    padding: 13px 15px;
+    border-bottom: 1px solid var(--border);
+    font-size: 10px;
+    align-items: center;
+    gap: 8px;
+}
+.detail:last-child { border-bottom: 0; }
+.detail span { color: var(--muted); flex-shrink: 0; }
+
+.footer {
+    text-align: center;
+    padding: 30px 10px 10px;
+    color: var(--muted);
+    font-size: 9px;
+    line-height: 2;
+}
+.footer strong { display: block; color: var(--text); }
+
+/* BOTTOM NAV */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 76px;
+    background: rgba(255,255,255,.94);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    z-index: 30;
+    padding-bottom: 5px;
+    backdrop-filter: blur(16px);
+}
+body.dark .bottom-nav { background: rgba(11,17,16,.94); }
+.nav {
+    width: 65px;
+    background: transparent;
+    color: var(--muted);
+    font-size: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+.nav-icon { font-size: 18px; }
+.nav.active { color: var(--gold); }
+.nav-add {
+    width: 52px;
+    height: 52px;
+    border-radius: 18px;
+    background: var(--green);
+    color: #dfbd7c;
+    font-size: 25px;
+    box-shadow: 0 10px 25px rgba(0,0,0,.2);
+    margin-top: -23px;
+}
+
+/* MODAL */
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,.6);
+    backdrop-filter: blur(5px);
+}
+.modal-box {
+    position: relative;
+    width: 100%;
+    max-width: 620px;
+    max-height: 92vh;
+    overflow-y: auto;
+    background: var(--card);
+    border-radius: 28px 28px 0 0;
+    padding: 20px;
+    z-index: 2;
+}
+.modal-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.modal-head small { color: var(--gold); font-size: 9px; }
+.modal-head h2 { font-size: 19px; margin-top: 3px; }
+.close {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    background: var(--card2);
+    color: var(--text);
+    font-size: 22px;
+}
+
+.media-preview {
+    width: 85px;
+    height: 85px;
+    margin: 0 auto 14px;
+    border-radius: 27px;
+    background: var(--card2);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    font-size: 30px;
+}
+.media-preview img { width: 100%; height: 100%; object-fit: cover; }
+
+.media-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 7px;
+    margin-bottom: 18px;
+}
+.media-buttons label,
+.media-buttons button {
+    background: var(--card2);
+    color: var(--text);
+    padding: 8px 11px;
+    border-radius: 11px;
+    font-size: 9px;
+}
+
+.form-group { margin-bottom: 14px; }
+.form-group label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    margin-bottom: 7px;
+}
+.form-group label span { color: var(--danger); }
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    border: 1px solid var(--border);
+    outline: 0;
+    background: var(--card2);
+    color: var(--text);
+    border-radius: 13px;
+    padding: 12px;
+    font-size: 11px;
+}
+.form-group textarea { resize: vertical; min-height: 85px; }
+
+.checkbox {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 10px;
+    margin: 8px 0 18px;
+}
+.checkbox input { accent-color: var(--gold); }
+
+.form-actions {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 8px;
+    margin-top: 20px;
+}
+.btn {
+    padding: 13px;
+    border-radius: 13px;
+    font-size: 11px;
+    font-weight: 700;
+}
+.btn-secondary { background: var(--card2); color: var(--text); }
+.btn-primary { background: var(--green); color: white; }
+.btn-danger { background: var(--danger); color: white; }
+
+/* SETTINGS */
+.setting-group { margin-bottom: 22px; }
+.setting-group h3 { font-size: 12px; margin-bottom: 10px; }
+.setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--card2);
+    border-radius: 15px;
+    padding: 14px;
+}
+.setting-row strong { display: block; font-size: 11px; }
+.setting-row small { display: block; color: var(--muted); font-size: 8px; margin-top: 3px; }
+
+.switch {
+    width: 47px;
+    height: 27px;
+    border-radius: 20px;
+    background: #aab0ac;
+    padding: 3px;
+    transition: .2s;
+}
+.switch span {
+    display: block;
+    width: 21px;
+    height: 21px;
+    border-radius: 50%;
+    background: white;
+    transition: .2s;
+}
+body.dark .switch { background: var(--gold); }
+body.dark .switch span { transform: translateX(-20px); }
+
+.options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 7px;
+}
+.option {
+    padding: 11px 5px;
+    background: var(--card2);
+    color: var(--text);
+    border-radius: 12px;
+    font-size: 10px;
+    border: 1px solid transparent;
+}
+.option.active { border-color: var(--gold); color: var(--gold); }
+
+/* PERMISSION MODAL */
+.permission-box {
+    text-align: center;
+    padding: 10px 0;
+}
+.permission-icon {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 20px;
+    border-radius: 28px;
+    background: linear-gradient(145deg, #1e40af, #3b82f6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    box-shadow: 0 15px 40px rgba(30,64,175,.4);
+}
+.permission-title {
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+.permission-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 2;
+    margin-bottom: 25px;
+    padding: 0 10px;
+}
+.permission-features {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 25px;
+    text-align: right;
+}
+.permission-feature {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--card2);
+    padding: 12px 14px;
+    border-radius: 14px;
+    font-size: 11px;
+}
+.permission-feature .pf-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: rgba(197,155,85,.15);
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.permission-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.permission-btn-primary {
+    width: 100%;
+    padding: 16px;
+    border-radius: 15px;
+    background: linear-gradient(135deg, #1e40af, #3b82f6);
+    color: white;
+    font-weight: 700;
+    font-size: 13px;
+    box-shadow: 0 10px 25px rgba(30,64,175,.4);
+    border: none;
+    cursor: pointer;
+}
+.permission-btn-primary:active { transform: scale(.97); }
+.permission-btn-secondary {
+    width: 100%;
+    padding: 14px;
+    border-radius: 15px;
+    background: var(--card2);
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 12px;
+    border: none;
+    cursor: pointer;
+}
+
+/* TOAST */
+.toast {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translate(-50%, 20px);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 200;
+    background: var(--green);
+    color: white;
+    padding: 11px 16px;
+    border-radius: 13px;
+    font-size: 10px;
+    transition: .25s;
+    max-width: 90vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+body.font-amiri { font-family: 'Amiri', serif; }
+body.font-naskh { font-family: 'Noto Naskh Arabic', serif; }
+body.size-small { font-size: 13px; }
+body.size-large { font-size: 17px; }
+
+@media (min-width: 700px) {
+    .page { padding-top: 30px; }
+    .bottom-nav {
+        left: 50%;
+        right: auto;
+        width: 620px;
+        transform: translateX(-50%);
+        border: 1px solid var(--border);
+        border-radius: 22px 22px 0 0;
+    }
+    .modal { align-items: center; }
+    .modal-box { border-radius: 25px; max-height: 90vh; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ===== SPLASH ===== -->
+<section id="splash" class="splash">
+    <div class="splash-content">
+        <div class="logo">
+            <div class="logo-inner">☎</div>
+        </div>
+        <h1>مخاطبین</h1>
+        <div class="english">C O N T A C T S</div>
+        <div class="line"></div>
+        <p class="splash-desc">
+            دفترچه مخاطبین هوشمند شما
+            <br>
+            ساده، زیبا و منظم برای مدیریت ارتباطات
+        </p>
+        <button class="enter" onclick="enterApp()">
+            ورود به برنامه ←
+        </button>
+    </div>
+    <div class="creator">
+        تهیه‌کننده
+        <strong>سید مقدس حسینی</strong>
+    </div>
+</section>
+
+
+<!-- ===== APP ===== -->
+<div id="app" class="app hidden">
+
+    <header class="header">
+        <div class="brand">
+            <div class="mini-logo">☎</div>
+            <div>
+                <div class="brand-title">مخاطبین</div>
+                <div class="brand-sub">دفترچه ارتباطات شما</div>
+            </div>
+        </div>
+        <button class="icon-btn" onclick="openSettings()">⚙</button>
+    </header>
+
+    <!-- HOME -->
+    <section id="home" class="page active">
+        <div class="hero">
+            <div>
+                <small>خوش آمدید</small>
+                <h2>مخاطبین من</h2>
+                <p>
+                    همه ارتباطات مهم خود را
+                    <br>
+                    ساده و منظم مدیریت کنید.
+                </p>
+            </div>
+            <div class="hero-icon">☎</div>
+        </div>
+
+        <div class="section-title">
+            <small>دسترسی سریع</small>
+            <h3>چه کاری می‌خواهید انجام دهید؟</h3>
+        </div>
+
+        <div class="quick-grid">
+            <button class="quick" onclick="showPage('contacts')">
+                <div class="quick-icon">👥</div>
+                <div>
+                    <strong>مخاطبین</strong>
+                    <span>مشاهده همه</span>
+                </div>
+            </button>
+            <button class="quick" onclick="showFavorites()">
+                <div class="quick-icon">★</div>
+                <div>
+                    <strong>برگزیده‌ها</strong>
+                    <span>مخاطبین مهم</span>
+                </div>
+            </button>
+            <button class="quick add" onclick="openContactModal()">
+                <div class="quick-icon">＋</div>
+                <div>
+                    <strong>مخاطب جدید</strong>
+                    <span>افزودن مخاطب</span>
+                </div>
+            </button>
+            <button class="quick" onclick="showPage('contacts'); setTimeout(function(){document.getElementById('search').focus()},100)">
+                <div class="quick-icon">⌕</div>
+                <div>
+                    <strong>جستجو</strong>
+                    <span>پیدا کردن سریع</span>
+                </div>
+            </button>
+        </div>
+
+        <div class="section-title">
+            <small>نمای کلی</small>
+            <h3>وضعیت مخاطبین</h3>
+        </div>
+
+        <div class="stats">
+            <div class="stat">
+                <strong id="totalCount">0</strong>
+                <span>کل مخاطبین</span>
+            </div>
+            <div class="stat">
+                <strong id="favoriteCount">0</strong>
+                <span>برگزیده</span>
+            </div>
+            <div class="stat">
+                <strong id="photoCount">0</strong>
+                <span>دارای عکس</span>
+            </div>
+        </div>
+
+        <div class="section-title">
+            <small>گروه‌ها</small>
+            <h3>دسته‌بندی مخاطبین</h3>
+        </div>
+
+        <div class="categories">
+            <button class="category" onclick="filterCategory('family')">
+                <div>
+                    <div class="category-name">خانواده</div>
+                    <div class="category-count" id="familyCount">0 نفر</div>
+                </div>
+                <div class="category-icon">⌂</div>
+            </button>
+            <button class="category" onclick="filterCategory('friend')">
+                <div>
+                    <div class="category-name">دوستان</div>
+                    <div class="category-count" id="friendCount">0 نفر</div>
+                </div>
+                <div class="category-icon">♧</div>
+            </button>
+            <button class="category" onclick="filterCategory('travel')">
+                <div>
+                    <div class="category-name">سفر</div>
+                    <div class="category-count" id="travelCount">0 نفر</div>
+                </div>
+                <div class="category-icon">✈</div>
+            </button>
+            <button class="category" onclick="filterCategory('doctor')">
+                <div>
+                    <div class="category-name">داکتر</div>
+                    <div class="category-count" id="doctorCount">0 نفر</div>
+                </div>
+                <div class="category-icon">＋</div>
+            </button>
+        </div>
+    </section>
+
+    <!-- CONTACTS -->
+    <section id="contacts" class="page">
+        <div class="page-head">
+            <div>
+                <small>دفترچه تلفن</small>
+                <h2>مخاطبین</h2>
+            </div>
+            <button class="add-btn" onclick="openContactModal()">
+                ＋ افزودن
+            </button>
+        </div>
+
+        <button type="button" class="sync-btn" onclick="syncContactsFromPhone()">
+            📥 افزودن از مخاطبین گوشی
+        </button>
+        <div class="sync-info">
+            💡 روی دکمه بالا بزن تا مخاطبین گوشیت رو انتخاب کنی
+        </div>
+
+        <div class="search">
+            <span class="search-icon">⌕</span>
+            <input
+                id="search"
+                type="search"
+                placeholder="نام، شماره یا یادداشت..."
+                oninput="renderContacts()"
+            >
+            <button onclick="clearSearch()">×</button>
+        </div>
+
+        <div class="filters">
+            <button class="filter active" data-filter="all" onclick="setFilter('all')">همه</button>
+            <button class="filter" data-filter="favorites" onclick="setFilter('favorites')">★ برگزیده</button>
+            <button class="filter" data-filter="family" onclick="setFilter('family')">خانواده</button>
+            <button class="filter" data-filter="friend" onclick="setFilter('friend')">دوستان</button>
+            <button class="filter" data-filter="travel" onclick="setFilter('travel')">سفر</button>
+            <button class="filter" data-filter="doctor" onclick="setFilter('doctor')">داکتر</button>
+            <button class="filter" data-filter="shop" onclick="setFilter('shop')">شاپ</button>
+        </div>
+
+        <div class="contact-stats">
+            <div>
+                <span>نمایش</span>
+                <strong id="shownCount">0</strong>
+            </div>
+            <div>
+                <span>کل</span>
+                <strong id="listTotal">0</strong>
+            </div>
+            <div>
+                <span>برگزیده</span>
+                <strong id="listFav">0</strong>
+            </div>
+        </div>
+
+        <div id="contactList" class="contact-list"></div>
+
+        <div id="empty" class="empty hidden">
+            <div class="empty-icon">👥</div>
+            <h3>مخاطبی پیدا نشد</h3>
+            <p>
+                هنوز مخاطبی در این بخش وجود ندارد
+                یا عبارت جستجوی شما نتیجه‌ای نداشت.
+            </p>
+            <button class="add-btn" onclick="openContactModal()">
+                ＋ افزودن مخاطب
+            </button>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="page">
+        <div class="page-head">
+            <div>
+                <small>اطلاعات برنامه</small>
+                <h2>درباره</h2>
+            </div>
+        </div>
+
+        <div class="about-card">
+            <div class="about-logo">☎</div>
+            <h2>مخاطبین</h2>
+            <div class="eng">C O N T A C T S</div>
+            <p>
+                یک دفترچه مخاطبین ساده، زیبا و کاربردی
+                برای نگهداری و مدیریت ارتباطات شما.
+            </p>
+        </div>
+
+        <div class="info">
+            <div class="info-title">تهیه‌کننده و سازنده</div>
+            <h3>سید مقدس حسینی</h3>
+            <p>
+                این برنامه با هدف ایجاد یک تجربه ساده،
+                منظم و کاربردی برای مدیریت مخاطبین طراحی شده است.
+            </p>
+        </div>
+
+        <div class="section-title">
+            <small>امکانات</small>
+            <h3>ویژگی‌های برنامه</h3>
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <div class="feature-check">✓</div>
+                <div>
+                    <strong>افزودن از مخاطبین گوشی</strong>
+                    <span>سینک از دفترچه تلفن دستگاه</span>
+                </div>
+            </div>
+            <div class="feature">
+                <div class="feature-check">✓</div>
+                <div>
+                    <strong>ارتباط سریع</strong>
+                    <span>تماس، واتساپ، تلگرام، SMS و IMO</span>
+                </div>
+            </div>
+            <div class="feature">
+                <div class="feature-check">✓</div>
+                <div>
+                    <strong>مدیریت کامل</strong>
+                    <span>افزودن، ویرایش و حذف مخاطبین</span>
+                </div>
+            </div>
+            <div class="feature">
+                <div class="feature-check">✓</div>
+                <div>
+                    <strong>جستجوی سریع</strong>
+                    <span>جستجو بر اساس نام، شماره و یادداشت</span>
+                </div>
+            </div>
+            <div class="feature">
+                <div class="feature-check">✓</div>
+                <div>
+                    <strong>برگزیده‌ها</strong>
+                    <span>دسترسی سریع به مخاطبین مهم</span>
+                </div>
+            </div>
+            <div class="feature">
+                <div class="feature-check">✓</div>
+                <div>
+                    <strong>حالت روشن و تاریک</strong>
+                    <span>تجربه بهتر در شب و روز</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title">
+            <small>مشخصات</small>
+            <h3>اطلاعات برنامه</h3>
+        </div>
+
+        <div class="details">
+            <div class="detail">
+                <span>نام برنامه</span>
+                <strong>مخاطبین</strong>
+            </div>
+            <div class="detail">
+                <span>نسخه</span>
+                <strong>1.0.0</strong>
+            </div>
+            <div class="detail">
+                <span>تهیه‌کننده</span>
+                <strong>سید مقدس حسینی</strong>
+            </div>
+            <div class="detail">
+                <span>سال تولید</span>
+                <strong>۱۴۰۴</strong>
+            </div>
+            <div class="detail">
+                <span>📧 ایمیل</span>
+                <a href="mailto:hussaini1185@gmail.com" class="social-link">hussaini1185@gmail.com</a>
+            </div>
+            <div class="detail">
+                <span>📘 فیسبوک</span>
+                <a href="https://www.facebook.com/share/19RK1uE8Km/" target="_blank" rel="noopener" class="social-link">مشاهده پیج</a>
+            </div>
+            <div class="detail">
+                <span>📸 اینستاگرام</span>
+                <a href="https://www.instagram.com/_aqazada313" target="_blank" rel="noopener" class="social-link">_aqazada313</a>
+            </div>
+            <div class="detail">
+                <span>📱 واتساپ</span>
+                <a href="https://wa.me/937xxxxxxxxx" target="_blank" rel="noopener" class="social-link">+93 7xx xxx xxx</a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <strong>مخاطبین</strong>
+            تهیه‌کننده: سید مقدس حسینی
+            <br>
+            © ۱۴۰۴ — تمامی حقوق محفوظ است
+        </div>
+    </section>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav">
+        <button class="nav active" data-page="home" onclick="showPage('home')">
+            <span class="nav-icon">⌂</span>
+            خانه
+        </button>
+        <button class="nav" data-page="contacts" onclick="showPage('contacts')">
+            <span class="nav-icon">👥</span>
+            مخاطبین
+        </button>
+        <button class="nav-add" onclick="openContactModal()">＋</button>
+        <button class="nav" onclick="showFavorites()">
+            <span class="nav-icon">★</span>
+            برگزیده
+        </button>
+        <button class="nav" data-page="about" onclick="showPage('about')">
+            <span class="nav-icon">ⓘ</span>
+            درباره
+        </button>
+    </nav>
+
+</div>
+
+
+<!-- ===== PERMISSION MODAL (اولین بار) ===== -->
+<div id="permissionModal" class="modal hidden">
+    <div class="overlay"></div>
+    <div class="modal-box">
+        <div class="permission-box">
+            <div class="permission-icon">📥</div>
+            <div class="permission-title">اجازه دسترسی به مخاطبین</div>
+            <div class="permission-desc">
+                برای اینکه بتونی مخاطبین گوشیت رو به برنامه اضافه کنی، لازمه اجازه بدی
+            </div>
+
+            <div class="permission-features">
+                <div class="permission-feature">
+                    <div class="pf-icon">👥</div>
+                    <span>خواندن مخاطبین گوشی و سیم‌کارت</span>
+                </div>
+                <div class="permission-feature">
+                    <div class="pf-icon">📞</div>
+                    <span>تماس مستقیم از داخل برنامه</span>
+                </div>
+                <div class="permission-feature">
+                    <div class="pf-icon">💬</div>
+                    <span>پیام از طریق واتساپ، تلگرام و SMS</span>
+                </div>
+                <div class="permission-feature">
+                    <div class="pf-icon">🔒</div>
+                    <span>اطلاعات شما فقط در گوشی خودتان ذخیره میشه</span>
+                </div>
+            </div>
+
+            <div class="permission-actions">
+                <button class="permission-btn-primary" onclick="allowSync()">
+                    ✓ موافقم، مخاطبین رو اضافه کن
+                </button>
+                <button class="permission-btn-secondary" onclick="skipSync()">
+                    بعداً انجام می‌دم
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ===== CONTACT MODAL ===== -->
+<div id="contactModal" class="modal hidden">
+    <div class="overlay" onclick="closeContactModal()"></div>
+    <div class="modal-box">
+        <div class="modal-head">
+            <div>
+                <small>دفترچه تلفن</small>
+                <h2 id="modalTitle">مخاطب جدید</h2>
+            </div>
+            <button class="close" onclick="closeContactModal()">×</button>
+        </div>
+
+        <div id="mediaPreview" class="media-preview">👤</div>
+
+        <div class="media-buttons">
+            <label>
+                📷 عکس
+                <input id="photoInput" type="file" accept="image/*" hidden onchange="selectPhoto(event)">
+            </label>
+            <button onclick="removePhoto()">حذف عکس</button>
+        </div>
+
+        <form id="contactForm" onsubmit="saveContact(event)">
+            <input id="contactId" type="hidden">
+
+            <div class="form-group">
+                <label>نام و نام خانوادگی <span>*</span></label>
+                <input id="nameInput" type="text" placeholder="مثلاً احمد حسینی" required>
+            </div>
+
+            <div class="form-group">
+                <label>شماره تماس <span>*</span></label>
+                <input id="phoneInput" type="tel" inputmode="tel" placeholder="مثلاً 0700000000" required>
+            </div>
+
+            <div class="form-group">
+                <label>دسته‌بندی</label>
+                <select id="categoryInput">
+                    <option value="other">متفرقه</option>
+                    <option value="family">خانواده</option>
+                    <option value="friend">دوست</option>
+                    <option value="travel">سفر</option>
+                    <option value="doctor">داکتر</option>
+                    <option value="shop">شاپ</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>یادداشت</label>
+                <textarea id="noteInput" placeholder="یادداشت درباره این مخاطب..."></textarea>
+            </div>
+
+            <label class="checkbox">
+                <input id="favoriteInput" type="checkbox">
+                <span>★ افزودن به برگزیده‌ها</span>
+            </label>
+
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeContactModal()">انصراف</button>
+                <button type="submit" class="btn btn-primary">ذخیره مخاطب</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- ===== SETTINGS MODAL ===== -->
+<div id="settingsModal" class="modal hidden">
+    <div class="overlay" onclick="closeSettings()"></div>
+    <div class="modal-box">
+        <div class="modal-head">
+            <div>
+                <small>شخصی‌سازی</small>
+                <h2>تنظیمات</h2>
+            </div>
+            <button class="close" onclick="closeSettings()">×</button>
+        </div>
+
+        <div class="setting-group">
+            <h3>ظاهر برنامه</h3>
+            <div class="setting-row">
+                <div>
+                    <strong>حالت تاریک</strong>
+                    <small>تغییر ظاهر برنامه</small>
+                </div>
+                <button id="themeSwitch" class="switch" onclick="toggleTheme()">
+                    <span></span>
+                </button>
+            </div>
+        </div>
+
+        <div class="setting-group">
+            <h3>فونت</h3>
+            <div class="options">
+                <button class="option active" data-font="vazir" onclick="setFont('vazir')">وزیر</button>
+                <button class="option" data-font="amiri" onclick="setFont('amiri')">امیری</button>
+                <button class="option" data-font="naskh" onclick="setFont('naskh')">نسخ</button>
+            </div>
+        </div>
+
+        <div class="setting-group">
+            <h3>اندازه نوشته</h3>
+            <div class="options">
+                <button class="option" data-size="small" onclick="setSize('small')">کوچک</button>
+                <button class="option active" data-size="medium" onclick="setSize('medium')">متوسط</button>
+                <button class="option" data-size="large" onclick="setSize('large')">بزرگ</button>
+            </div>
+        </div>
+
+        <div class="setting-group">
+            <h3>مخاطبین</h3>
+            <div class="setting-row">
+                <div>
+                    <strong>📥 افزودن از گوشی</strong>
+                    <small>انتخاب مخاطبین از دفترچه تلفن</small>
+                </div>
+                <button class="btn btn-primary" onclick="closeSettings(); syncContactsFromPhone()" style="padding:8px 14px;">
+                    شروع
+                </button>
+            </div>
+        </div>
+
+        <button class="btn btn-primary" style="width:100%" onclick="closeSettings(); showPage('about')">
+            درباره برنامه
+        </button>
+    </div>
+</div>
+
+
+<!-- ===== DELETE MODAL ===== -->
+<div id="deleteModal" class="modal hidden">
+    <div class="overlay" onclick="closeDelete()"></div>
+    <div class="modal-box">
+        <div style="text-align:center;padding:15px 0">
+            <div style="width:60px;height:60px;margin:auto;border-radius:20px;background:rgba(184,74,74,.12);color:#b84a4a;display:flex;align-items:center;justify-content:center;font-size:25px;">
+                !
+            </div>
+            <h2 style="font-size:18px;margin-top:15px">حذف مخاطب؟</h2>
+            <p id="deleteText" style="color:var(--muted);font-size:10px;line-height:2;margin-top:7px">
+                آیا از حذف این مخاطب مطمئن هستید؟
+            </p>
+            <div class="form-actions">
+                <button class="btn btn-secondary" onclick="closeDelete()">انصراف</button>
+                <button class="btn btn-danger" onclick="confirmDelete()">حذف</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ===== TOAST ===== -->
+<div id="toast" class="toast">
+    <span id="toastText">انجام شد</span>
+</div>
+
+
+<script>
+const STORAGE_KEY = "contacts_app_v3";
+const PERMISSION_KEY = "contacts_permission_asked";
+
+let contacts = [];
+let currentFilter = "all";
+let deleteId = null;
+let currentPhoto = "";
+
+/* ======================================================
+   START
+====================================================== */
+document.addEventListener("DOMContentLoaded", function () {
+    loadContacts();
+    loadSettings();
+    updateAll();
+
+    // نمایش مودال اجازه‌گیری در اولین بار
+    if (!localStorage.getItem(PERMISSION_KEY)) {
+        setTimeout(function () {
+            document.getElementById("permissionModal").classList.remove("hidden");
+        }, 800);
+    }
+});
+
+/* ======================================================
+   ENTER APP
+====================================================== */
+function enterApp() {
+    document.getElementById("splash").classList.add("hidden");
+    document.getElementById("app").classList.remove("hidden");
+    updateAll();
+}
+
+/* ======================================================
+   PERMISSION MODAL
+====================================================== */
+function allowSync() {
+    localStorage.setItem(PERMISSION_KEY, "yes");
+    document.getElementById("permissionModal").classList.add("hidden");
+
+    // برو به صفحه مخاطبین و شروع کن
+    showPage("contacts");
+    setTimeout(function () {
+        syncContactsFromPhone();
+    }, 400);
+}
+
+function skipSync() {
+    localStorage.setItem(PERMISSION_KEY, "no");
+    document.getElementById("permissionModal").classList.add("hidden");
+}
+
+/* ======================================================
+   PAGE NAVIGATION
+====================================================== */
+function showPage(page) {
+    document.querySelectorAll(".page").forEach(function (el) {
+        el.classList.remove("active");
+    });
+
+    const target = document.getElementById(page);
+    if (target) target.classList.add("active");
+
+    document.querySelectorAll(".nav").forEach(function (btn) {
+        btn.classList.remove("active");
+        if (btn.dataset.page === page) btn.classList.add("active");
+    });
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    if (page === "contacts") renderContacts();
+}
+
+/* ======================================================
+   STORAGE
+====================================================== */
+function loadContacts() {
+    try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            if (Array.isArray(parsed)) {
+                contacts = parsed;
+                return;
+            }
+        }
+        contacts = [];
+    } catch (e) {
+        console.error(e);
+        contacts = [];
+    }
+}
+
+function saveToStorage() {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(contacts));
+    } catch (e) {
+        console.error(e);
+        showToast("فضای ذخیره‌سازی کافی نیست");
+    }
+}
+
+/* ======================================================
+   SYNC CONTACTS - انتخاب چندگانه از گوشی
+====================================================== */
+async function syncContactsFromPhone() {
+
+    // بررسی پشتیبانی
+    if (!("contacts" in navigator) || !("ContactsManager" in window)) {
+        showToast("مرورگر پشتیبانی نمی‌کند. لطفاً از Chrome استفاده کنید");
+        return;
+    }
+
+    try {
+        const props = ["name", "tel"];
+        const opts = { multiple: true };
+
+        const picked = await navigator.contacts.select(props, opts);
+
+        if (!picked || picked.length === 0) {
+            showToast("هیچ مخاطبی انتخاب نشد");
+            return;
+        }
+
+        let added = 0;
+        let skipped = 0;
+
+        picked.forEach(function (p) {
+            const name = (p.name && p.name[0]) ? p.name[0].trim() : "";
+            const phone = (p.tel && p.tel[0]) ? p.tel[0].trim() : "";
+
+            if (!name || !phone) {
+                skipped++;
+                return;
+            }
+
+            // جلوگیری از تکراری
+            const dup = contacts.some(function (c) {
+                return c.phone === phone;
+            });
+
+            if (dup) {
+                skipped++;
+                return;
+            }
+
+            contacts.push({
+                id: Date.now().toString() + Math.random().toString(16).slice(2),
+                name: name,
+                phone: phone,
+                category: "other",
+                note: "",
+                favorite: false,
+                photo: "",
+                createdAt: new Date().toISOString()
+            });
+
+            added++;
+        });
+
+        if (added > 0) {
+            saveToStorage();
+            updateAll();
+            showToast(added + " مخاطب اضافه شد" + (skipped > 0 ? " — " + skipped + " تکراری" : ""));
+        } else {
+            showToast("هیچ مخاطب جدیدی اضافه نشد");
+        }
+
+    } catch (err) {
+        if (err.name === "AbortError") return;
+        console.error(err);
+        showToast("خطا در خواندن مخاطبین");
+    }
+}
+
+/* ======================================================
+   QUICK ACTIONS
+====================================================== */
+function cleanPhone(p) {
+    let c = (p || "").replace(/\s+/g, "").replace(/\+/g, "");
+    if (c.startsWith("00")) c = c.substring(2);
+    if (c.startsWith("0")) c = "93" + c.substring(1);
+    return c;
+}
+
+function openWhatsApp(phone) {
+    if (!phone) { showToast("شماره موجود نیست"); return; }
+    const c = cleanPhone(phone);
+    window.location.href = "https://wa.me/" + c;
+}
+
+function openTelegram(phone) {
+    if (!phone) { showToast("شماره موجود نیست"); return; }
+    const c = cleanPhone(phone);
+    // تلگرام با شماره بین‌المللی
+    window.location.href = "https://t.me/+" + c;
+}
+
+function openSMS(phone) {
+    if (!phone) { showToast("شماره موجود نیست"); return; }
+    window.location.href = "sms:" + phone.replace(/\s+/g, "");
+}
+
+function openIMO(phone) {
+    if (!phone) { showToast("شماره موجود نیست"); return; }
+    // باز کردن اپ IMO (اگه نصب باشه)
+    window.location.href = "imo://";
+}
+
+function callContact(phone) {
+    if (!phone) return;
+    window.location.href = "tel:" + phone.replace(/\s+/g, "");
+}
+
+/* ======================================================
+   OPEN CONTACT MODAL
+====================================================== */
+function openContactModal(id) {
+    const modal = document.getElementById("contactModal");
+    document.getElementById("contactForm").reset();
+    currentPhoto = "";
+    document.getElementById("contactId").value = "";
+    document.getElementById("modalTitle").textContent = "مخاطب جدید";
+    document.getElementById("mediaPreview").innerHTML = "👤";
+
+    if (id !== undefined && id !== null && id !== "") {
+        const c = contacts.find(function (x) { return x.id === id; });
+        if (!c) return;
+
+        document.getElementById("modalTitle").textContent = "ویرایش مخاطب";
+        document.getElementById("contactId").value = c.id;
+        document.getElementById("nameInput").value = c.name || "";
+        document.getElementById("phoneInput").value = c.phone || "";
+        document.getElementById("categoryInput").value = c.category || "other";
+        document.getElementById("noteInput").value = c.note || "";
+        document.getElementById("favoriteInput").checked = !!c.favorite;
+
+        currentPhoto = c.photo || "";
+        if (currentPhoto) {
+            document.getElementById("mediaPreview").innerHTML =
+                '<img src="' + currentPhoto + '" alt="تصویر">';
+        }
+    }
+
+    modal.classList.remove("hidden");
+    setTimeout(function () {
+        document.getElementById("nameInput").focus();
+    }, 100);
+}
+
+function closeContactModal() {
+    document.getElementById("contactModal").classList.add("hidden");
+}
+
+/* ======================================================
+   PHOTO
+====================================================== */
+function selectPhoto(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+        showToast("لطفاً یک تصویر انتخاب کنید");
+        return;
+    }
+
+    if (file.size > 3 * 1024 * 1024) {
+        showToast("حجم عکس باید کمتر از ۳ مگابایت باشد");
+        event.target.value = "";
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        currentPhoto = e.target.result;
+        document.getElementById("mediaPreview").innerHTML =
+            '<img src="' + currentPhoto + '" alt="تصویر">';
+    };
+    reader.readAsDataURL(file);
+}
+
+function removePhoto() {
+    currentPhoto = "";
+    document.getElementById("photoInput").value = "";
+    document.getElementById("mediaPreview").innerHTML = "👤";
+}
+
+/* ======================================================
+   SAVE CONTACT
+====================================================== */
+function saveContact(event) {
+    event.preventDefault();
+
+    const name = document.getElementById("nameInput").value.trim();
+    const phone = document.getElementById("phoneInput").value.trim();
+    const category = document.getElementById("categoryInput").value;
+    const note = document.getElementById("noteInput").value.trim();
+    const favorite = document.getElementById("favoriteInput").checked;
+    const id = document.getElementById("contactId").value;
+
+    if (!name) { showToast("نام را وارد کنید"); return; }
+    if (!phone) { showToast("شماره را وارد کنید"); return; }
+
+    if (id) {
+        const idx = contacts.findIndex(function (c) { return c.id === id; });
+        if (idx !== -1) {
+            contacts[idx].name = name;
+            contacts[idx].phone = phone;
+            contacts[idx].category = category;
+            contacts[idx].note = note;
+            contacts[idx].favorite = favorite;
+            contacts[idx].photo = currentPhoto;
+            showToast("مخاطب ویرایش شد");
+        }
+    } else {
+        contacts.unshift({
+            id: Date.now().toString() + Math.random().toString(16).slice(2),
+            name: name,
+            phone: phone,
+            category: category,
+            note: note,
+            favorite: favorite,
+            photo: currentPhoto,
+            createdAt: new Date().toISOString()
+        });
+        showToast("مخاطب اضافه شد");
+    }
+
+    saveToStorage();
+    closeContactModal();
+    updateAll();
+    showPage("contacts");
+}
+
+/* ======================================================
+   RENDER CONTACTS
+====================================================== */
+function renderContacts() {
+    const list = document.getElementById("contactList");
+    const empty = document.getElementById("empty");
+    const query = document.getElementById("search").value.trim().toLowerCase();
+
+    let result = contacts.slice();
+
+    if (currentFilter === "favorites") {
+        result = result.filter(function (c) { return c.favorite === true; });
+    } else if (currentFilter !== "all") {
+        result = result.filter(function (c) { return c.category === currentFilter; });
+    }
+
+    if (query) {
+        result = result.filter(function (c) {
+            return (
+                (c.name || "").toLowerCase().indexOf(query) !== -1 ||
+                (c.phone || "").toLowerCase().indexOf(query) !== -1 ||
+                (c.note || "").toLowerCase().indexOf(query) !== -1 ||
+                categoryName(c.category).toLowerCase().indexOf(query) !== -1
+            );
+        });
+    }
+
+    list.innerHTML = "";
+
+    if (result.length === 0) {
+        empty.classList.remove("hidden");
+    } else {
+        empty.classList.add("hidden");
+        result.forEach(function (c) {
+            list.appendChild(createContactCard(c));
+        });
+    }
+
+    document.getElementById("shownCount").textContent = result.length;
+    document.getElementById("listTotal").textContent = contacts.length;
+    document.getElementById("listFav").textContent = contacts.filter(function (c) {
+        return c.favorite;
+    }).length;
+
+    updateFilterButtons();
+}
+
+/* ======================================================
+   CONTACT CARD
+====================================================== */
+function createContactCard(contact) {
+
+    const card = document.createElement("div");
+    card.className = "contact-card";
+
+    const avatar = document.createElement("div");
+    avatar.className = "avatar";
+
+    if (contact.photo) {
+        const img = document.createElement("img");
+        img.src = contact.photo;
+        img.alt = contact.name;
+        avatar.appendChild(img);
+    } else {
+        avatar.textContent = getInitial(contact.name);
+    }
+
+    const info = document.createElement("div");
+    info.className = "contact-info";
+
+    const name = document.createElement("div");
+    name.className = "contact-name";
+    name.textContent = contact.name;
+
+    const phone = document.createElement("div");
+    phone.className = "contact-phone";
+    phone.textContent = contact.phone || "بدون شماره";
+
+    const category = document.createElement("span");
+    category.className = "contact-category";
+    category.textContent = categoryName(contact.category);
+
+    info.appendChild(name);
+    info.appendChild(phone);
+    info.appendChild(category);
+
+    if (contact.note) {
+        const note = document.createElement("div");
+        note.style.cssText = "font-size:8px;color:var(--muted);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis";
+        note.textContent = contact.note;
+        info.appendChild(note);
+    }
+
+    // دکمه‌های ارتباط سریع
+    if (contact.phone) {
+        const qa = document.createElement("div");
+        qa.className = "contact-quick-actions";
+
+        const wa = document.createElement("button");
+        wa.className = "quick-act wa";
+        wa.innerHTML = "💬 واتساپ";
+        wa.onclick = function (e) {
+            e.stopPropagation();
+            openWhatsApp(contact.phone);
+        };
+        qa.appendChild(wa);
+
+        const tg = document.createElement("button");
+        tg.className = "quick-act tg";
+        tg.innerHTML = "✈️ تلگرام";
+        tg.onclick = function (e) {
+            e.stopPropagation();
+            openTelegram(contact.phone);
+        };
+        qa.appendChild(tg);
+
+        const sms = document.createElement("button");
+        sms.className = "quick-act sms";
+        sms.innerHTML = "✉️ پیامک";
+        sms.onclick = function (e) {
+            e.stopPropagation();
+            openSMS(contact.phone);
+        };
+        qa.appendChild(sms);
+
+        const imo = document.createElement("button");
+        imo.className = "quick-act imo";
+        imo.innerHTML = "📲 IMO";
+        imo.onclick = function (e) {
+            e.stopPropagation();
+            openIMO(contact.phone);
+        };
+        qa.appendChild(imo);
+
+        info.appendChild(qa);
+    }
+
+    const actions = document.createElement("div");
+    actions.className = "contact-actions";
+
+    const fav = document.createElement("button");
+    fav.className = "fav" + (contact.favorite ? " active" : "");
+    fav.textContent = "★";
+    fav.onclick = function () { toggleFavorite(contact.id); };
+
+    const call = document.createElement("button");
+    call.className = "call";
+    call.textContent = "☎";
+    call.onclick = function () { callContact(contact.phone); };
+
+    const edit = document.createElement("button");
+    edit.textContent = "✎";
+    edit.onclick = function () { openContactModal(contact.id); };
+
+    const del = document.createElement("button");
+    del.textContent = "⌫";
+    del.onclick = function () { openDelete(contact.id); };
+
+    actions.appendChild(fav);
+    actions.appendChild(call);
+    actions.appendChild(edit);
+    actions.appendChild(del);
+
+    card.appendChild(avatar);
+    card.appendChild(info);
+    card.appendChild(actions);
+
+    return card;
+}
+
+/* ======================================================
+   CATEGORY
+====================================================== */
+function categoryName(cat) {
+    const n = {
+        family: "خانواده",
+        friend: "دوست",
+        travel: "سفر",
+        doctor: "داکتر",
+        shop: "شاپ",
+        other: "متفرقه"
+    };
+    return n[cat] || "متفرقه";
+}
+
+function filterCategory(cat) {
+    currentFilter = cat;
+    showPage("contacts");
+    renderContacts();
+}
+
+/* ======================================================
+   FILTER
+====================================================== */
+function setFilter(f) {
+    currentFilter = f;
+    showPage("contacts");
+    renderContacts();
+}
+
+function showFavorites() {
+    currentFilter = "favorites";
+    showPage("contacts");
+    renderContacts();
+}
+
+function updateFilterButtons() {
+    document.querySelectorAll(".filter").forEach(function (b) {
+        b.classList.toggle("active", b.dataset.filter === currentFilter);
+    });
+}
+
+/* ======================================================
+   FAVORITE
+====================================================== */
+function toggleFavorite(id) {
+    const c = contacts.find(function (x) { return x.id === id; });
+    if (!c) return;
+
+    c.favorite = !c.favorite;
+    saveToStorage();
+    updateAll();
+
+    showToast(c.favorite ? "به برگزیده‌ها اضافه شد" : "از برگزیده‌ها حذف شد");
+}
+
+/* ======================================================
+   DELETE
+====================================================== */
+function openDelete(id) {
+    const c = contacts.find(function (x) { return x.id === id; });
+    if (!c) return;
+
+    deleteId = id;
+    document.getElementById("deleteText").textContent =
+        "آیا مطمئن هستید که می‌خواهید «" + c.name + "» را حذف کنید؟";
+    document.getElementById("deleteModal").classList.remove("hidden");
+}
+
+function closeDelete() {
+    deleteId = null;
+    document.getElementById("deleteModal").classList.add("hidden");
+}
+
+function confirmDelete() {
+    if (!deleteId) return;
+    contacts = contacts.filter(function (c) { return c.id !== deleteId; });
+    saveToStorage();
+    closeDelete();
+    updateAll();
+    showToast("مخاطب حذف شد");
+}
+
+/* ======================================================
+   SEARCH
+====================================================== */
+function clearSearch() {
+    document.getElementById("search").value = "";
+    renderContacts();
+}
+
+/* ======================================================
+   STATS
+====================================================== */
+function updateAll() {
+    document.getElementById("totalCount").textContent = contacts.length;
+    document.getElementById("favoriteCount").textContent = contacts.filter(function (c) {
+        return c.favorite;
+    }).length;
+    document.getElementById("photoCount").textContent = contacts.filter(function (c) {
+        return c.photo;
+    }).length;
+
+    document.getElementById("familyCount").textContent =
+        contacts.filter(function (c) { return c.category === "family"; }).length + " نفر";
+    document.getElementById("friendCount").textContent =
+        contacts.filter(function (c) { return c.category === "friend"; }).length + " نفر";
+    document.getElementById("travelCount").textContent =
+        contacts.filter(function (c) { return c.category === "travel"; }).length + " نفر";
+    document.getElementById("doctorCount").textContent =
+        contacts.filter(function (c) { return c.category === "doctor"; }).length + " نفر";
+
+    renderContacts();
+}
+
+function getInitial(name) {
+    if (!name) return "؟";
+    return name.trim().charAt(0);
+}
+
+/* ======================================================
+   SETTINGS
+====================================================== */
+function openSettings() {
+    document.getElementById("settingsModal").classList.remove("hidden");
+}
+
+function closeSettings() {
+    document.getElementById("settingsModal").classList.add("hidden");
+}
+
+function toggleTheme() {
+    document.body.classList.toggle("dark");
+    const dark = document.body.classList.contains("dark");
+    localStorage.setItem("contacts_theme", dark ? "dark" : "light");
+}
+
+function setFont(font) {
+    document.body.classList.remove("font-amiri", "font-naskh");
+    if (font === "amiri") document.body.classList.add("font-amiri");
+    if (font === "naskh") document.body.classList.add("font-naskh");
+    localStorage.setItem("contacts_font", font);
+
+    document.querySelectorAll("[data-font]").forEach(function (b) {
+        b.classList.toggle("active", b.dataset.font === font);
+    });
+}
+
+function setSize(size) {
+    document.body.classList.remove("size-small", "size-large");
+    if (size === "small") document.body.classList.add("size-small");
+    if (size === "large") document.body.classList.add("size-large");
+    localStorage.setItem("contacts_size", size);
+
+    document.querySelectorAll("[data-size]").forEach(function (b) {
+        b.classList.toggle("active", b.dataset.size === size);
+    });
+}
+
+function loadSettings() {
+    const theme = localStorage.getItem("contacts_theme");
+    if (theme === "dark") document.body.classList.add("dark");
+
+    const font = localStorage.getItem("contacts_font") || "vazir";
+    const size = localStorage.getItem("contacts_size") || "medium";
+
+    setFont(font);
+    setSize(size);
+}
+
+/* ======================================================
+   TOAST
+====================================================== */
+let toastTimer = null;
+function showToast(msg) {
+    const t = document.getElementById("toast");
+    const txt = document.getElementById("toastText");
+    txt.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+        t.classList.remove("show");
+    }, 2500);
+}
+
+/* ======================================================
+   SERVICE WORKER
+====================================================== */
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js")
+        .then(function () { console.log("✓ SW registered"); })
+        .catch(function (e) { console.log("SW error:", e); });
+}
+</script>
+
+</body>
+</html>
